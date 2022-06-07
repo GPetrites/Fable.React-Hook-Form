@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "App", "sample\App.fsproj", "{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BACD6DDA-A974-47EC-813A-4C76682A4536}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		NuGet.Config = NuGet.Config
+		package-lock.json = package-lock.json
+		package.json = package.json
+		README.md = README.md
+		webpack.common.js = webpack.common.js
+		webpack.config.js = webpack.config.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{4C120228-B6D1-4486-9E3E-C73799C3BAD4}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fable.React-Hook-Form", "Fable.React-Hook-Form\Fable.React-Hook-Form.fsproj", "{720FC66E-4B2E-496C-807E-6FCCD9965299}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{720FC66E-4B2E-496C-807E-6FCCD9965299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{720FC66E-4B2E-496C-807E-6FCCD9965299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{720FC66E-4B2E-496C-807E-6FCCD9965299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{720FC66E-4B2E-496C-807E-6FCCD9965299}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5DEFC96-37CF-4844-9C9E-CFA0A9A8AED3} = {4C120228-B6D1-4486-9E3E-C73799C3BAD4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10E8CD24-3EC2-4B88-AF25-F5807B4B92B9}
+	EndGlobalSection
+EndGlobal

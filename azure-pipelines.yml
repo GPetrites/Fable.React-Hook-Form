@@ -1,0 +1,57 @@
+trigger:
+  branches:
+    include:
+      - develop
+      - release
+      - master
+
+stages:
+  - stage: serverBuild
+    displayName: "Server Build"
+    dependsOn: []
+    pool:
+      name: Breakpoint
+      demands:
+        - yarn
+        - msbuild
+        - visualstudio
+    jobs:
+      - job: DevOpsBuild
+        displayName: "DevOps Build"
+        steps:
+          - checkout: self
+            persistCredentials: true
+
+          - task: gittools.gitversion.gitversion-task.GitVersion@4
+            displayName: Generate version number using GitVersion
+            inputs:
+              updateAssemblyInfo: false
+
+          - task: UpdateBuildNumber@0
+            displayName: Update Build Number
+            inputs:
+              buildNumber: Fable.React-Hook-Form $(Build.BuildNumber)
+
+          - task: DotNetCoreCLI@2
+            displayName: Build and Pack
+            inputs:
+              command: pack
+              searchPatternPack: "**/Fable.React-Hook-Form.fsproj"
+              versioningScheme: byEnvVar
+              versionEnvVar: "GitVersion.SemVer"
+              verbosityPack: normal
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+          - task: BlueBasher.bluebasher-workitemupdater.bluebasher-workitemupdater.WorkItemUpdater@2
+            displayName: WorkItem Updater
+            inputs:
+              workItemType: Bug,Product Backlog Item
+              allWorkItemsSinceLastRelease: true
+              workItemState: Coding
+              workItemCurrentState: New,Approved,Code Review
+              linkBuild: true

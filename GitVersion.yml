@@ -1,0 +1,20 @@
+mode: ContinuousDelivery
+assembly-informational-format: '{SemVer}'
+branches:
+  pull-request:
+    mode: ContinuousDeployment
+    tag: alpha.PR.{BranchName}
+    track-merge-target: false
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+  feature:
+    mode: ContinuousDeployment
+    tag: alpha.{BranchName}
+    track-merge-target: false
+  develop:
+    increment: Patch
+    tag: beta
+  release:
+    tag: release
+    mode: ContinuousDeployment
+ignore:
+  sha: []
