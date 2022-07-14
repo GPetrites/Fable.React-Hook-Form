@@ -10,15 +10,16 @@ open Fable.ReactHookForm.Controller
 open Fable.ReactHookForm.Validation
 open System.Text.RegularExpressions
 
+type IDataNested = { Age: int }
 type IData =
     { FirstName: string
       LastName: string
-      Age: int }
+      Nested: IDataNested }
 
 let defaultValues =
     { FirstName = "Greg"
       LastName = "Petrites"
-      Age = 59 }
+      Nested = { Age = 59 } }
 
 [<ReactComponent>]
 let TestForm () =
@@ -44,10 +45,8 @@ let TestForm () =
         |> Async.StartAsPromise
 
     let firstName =
-        useController<string>
-            [ Control form.control
-              Name "FirstName"
-              Rules [
+        useController form.control (fun x -> x.FirstName)
+            [ Rules [
                   Required "First name is required"
                   MinLength { value = 4; message = "Min length 4" }
                   MaxLength
@@ -60,10 +59,11 @@ let TestForm () =
               ] ]
 
     let lastName =
-        useController<string>
-            [ Control form.control
-              Name "LastName"
-              Rules [ ValidateAsync validateAsync ] ]
+        useController form.control (fun x -> x.LastName)
+            [ Rules [ ValidateAsync validateAsync ] ]
+
+    let age =
+        useController form.control (fun x -> x.Nested.Age ) []
 
     let submit (v: IData) = console.log ("Submit", v)
 
@@ -85,7 +85,8 @@ let TestForm () =
                               TextField.Value lastName.field.value
                               TextField.OnChange lastName.field.onChangeEvent
                               TextField.ErrorMessage lastName.fieldState.error.message ] []
-        SpinButton.spinButton [ SpinButton.Label "Age" ] []
+        SpinButton.spinButton [ SpinButton.Label "Age"
+                                SpinButton.Value (age.field.value.ToString()) ] []
         Button.defaultButton [ Button.OnClick(fun e -> form.reset ())
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"

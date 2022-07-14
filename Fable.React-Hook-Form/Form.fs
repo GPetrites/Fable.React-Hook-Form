@@ -27,20 +27,20 @@ module Form =
           isValidating: bool
           isValid: bool }
 
-    type Control = { register: obj; unregister: obj }
+    type Control<'T> = { register: obj; unregister: obj }
 
     type SubmitHandler<'T> = 'T -> unit
     type SubmitErrorHandler = obj -> unit
 
     type private UseFormReturnInternal<'T> =
-        { control: Control
+        { control: Control<'T>
           handleSubmit: SubmitHandler<'T> -> SubmitErrorHandler -> Func<Browser.Types.Event, unit>
           reset: unit -> unit
           formState: FormState<'T>
           getValues: obj }
 
     type UseFormReturn<'T> =
-        { control: Control
+        { control: Control<'T>
           handleSubmit: SubmitHandler<'T> -> SubmitErrorHandler -> Browser.Types.Event -> unit
           reset: unit -> unit
           formState: FormState<'T>

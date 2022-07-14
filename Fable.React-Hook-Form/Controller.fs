@@ -5,8 +5,8 @@ open Fable.Core.JsInterop
 open Fable.ReactHookForm.Validation
 
 module Controller =
-    type UseControllerProps<'F> =
-        | Control of Form.Control
+    type UseControllerProps<'T,'F> =
+        | Control of Form.Control<'T>
         | Name of string
         | Rules of Rule list
 
@@ -37,7 +37,7 @@ module Controller =
         { field: ControllerRenderPropsInternal<'F>
           fieldState: ControllerFieldStateInternal }
 
-    type UseControllerReturn<'F> =
+    type UseControllerReturn<'T,'F> =
         { field: ControllerRenderProps<'F>
           fieldState: ControllerFieldState }
 
@@ -51,8 +51,10 @@ module Controller =
         | None -> { message = "" }
         | Some e -> e
 
-    let useController<'F> (props: UseControllerProps<'F> list) : UseControllerReturn<'F> =
-        let newProps = props |> List.map flattenRules
+    let internalUseController<'T,'F> (props: UseControllerProps<'T,'F> list) : UseControllerReturn<'T,'F> =
+        let newProps =
+            props
+            |> List.map flattenRules
 
         let r: UseControllerReturnInternal<'F> =
             import "useController" "react-hook-form" (keyValueList CaseRules.LowerFirst newProps)
@@ -67,3 +69,8 @@ module Controller =
               value = r.field.value
               onChange = !!r.field.onChange
               onChangeEvent = r.field.onChange } }
+
+    let inline useController<'T,'F> (control: Form.Control<'T>) (field: ('T -> 'F))  (props: UseControllerProps<'T,'F> list) : UseControllerReturn<'T,'F> =
+        let name = Experimental.namesofLambda(field) |> String.concat "."
+
+        internalUseController<'T,'F> (Control control :: Name name :: props)
