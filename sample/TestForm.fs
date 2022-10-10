@@ -17,9 +17,9 @@ type IData =
       Nested: IDataNested }
 
 let defaultValues =
-    { FirstName = "Greg"
-      LastName = "Petrites"
-      Nested = { Age = 59 } }
+    { FirstName = "Steve"
+      LastName = "Smith"
+      Nested = { Age = 34 } }
 
 [<ReactComponent>]
 let TestForm () =

@@ -7,12 +7,14 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Description>Fable bindings for react-hook-form</Description>
     <PackageTags>fsharp;fable;react;html</PackageTags>
-    <Authors>Dean Dorton</Authors>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/GPetrites/Fable.React-Hook-Form</RepositoryUrl>
+    <Authors>Greg Petrites</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\readme.md" Pack="true" PackagePath="\"/>
     <Compile Include="Validation.fs" />
     <Compile Include="Form.fs" />
     <Compile Include="Controller.fs" />
