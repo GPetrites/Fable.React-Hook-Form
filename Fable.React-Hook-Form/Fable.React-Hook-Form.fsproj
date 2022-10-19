@@ -4,11 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Fable.React_Hook_Form</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageProjectUrl>https://gpetrites.github.io/Fable.React-Hook-Form</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GPetrites/Fable.React-Hook-Form</RepositoryUrl>
+    <Authors>Greg Petrites</Authors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Description>Fable bindings for react-hook-form</Description>
     <PackageTags>fsharp;fable;react;html</PackageTags>
-    <RepositoryUrl>https://github.com/GPetrites/Fable.React-Hook-Form</RepositoryUrl>
-    <Authors>Greg Petrites</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
@@ -31,7 +32,7 @@
     </ItemGroup>
     <PropertyGroup>
         <NpmDependencies>
-            <NpmPackage Name="react-hook-form" Version="gte 7.0.0" />
+            <NpmPackage Name="react-hook-form" Version="gte 7.0.0 lt 8.0" />
         </NpmDependencies>
     </PropertyGroup>
 </Project>
