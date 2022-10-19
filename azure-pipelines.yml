@@ -5,6 +5,16 @@ trigger:
       - release
       - master
 
+pr:
+  branches:
+    include:
+    - develop
+    - master
+  paths:
+    exclude:
+    - docs
+  drafts: false
+
 stages:
   - stage: serverBuild
     displayName: "Server Build"
@@ -21,6 +31,7 @@ stages:
         steps:
           - checkout: self
             persistCredentials: true
+            fetchDepth: 0
 
           - task: gittools.gitversion.gitversion-task.GitVersion@4
             displayName: Generate version number using GitVersion
@@ -46,15 +57,6 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
-
-          - task: BlueBasher.bluebasher-workitemupdater.bluebasher-workitemupdater.WorkItemUpdater@2
-            displayName: WorkItem Updater
-            inputs:
-              workItemType: Bug,Product Backlog Item
-              allWorkItemsSinceLastRelease: true
-              workItemState: Coding
-              workItemCurrentState: New,Approved,Code Review
-              linkBuild: true
 
           - task: ATP.ATP-GitTag.GitTag.GitTag@5
             displayName: Create version tag in git for master builds
