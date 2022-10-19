@@ -31,18 +31,17 @@ let TestForm () =
 
     let validateSync v =
         if v = "James" then
-            "Can't be James"
+            Some "Can't be James"
         else
-            ""
+            None
 
     let validateAsync v =
         async {
             if v = "Jones" then
-                return "Can't be Jones"
+                return Some "Can't be Jones"
             else
-                return ""
+                return None
         }
-        |> Async.StartAsPromise
 
     let firstName =
         useController form.control (fun x -> x.FirstName)

@@ -44,7 +44,7 @@ module Form =
           handleSubmit: SubmitHandler<'T> -> SubmitErrorHandler -> Browser.Types.Event -> unit
           reset: unit -> unit
           formState: FormState<'T>
-          getValues: obj }
+          getValues: obj } 
 
     let useForm<'T> (props: UseFormProps<'T> list) : UseFormReturn<'T> =
         let r: UseFormReturnInternal<'T> =

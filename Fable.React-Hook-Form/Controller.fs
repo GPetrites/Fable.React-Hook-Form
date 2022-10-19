@@ -43,7 +43,13 @@ module Controller =
 
     let private flattenRules prop =
         match prop with
-        | Rules rules -> Rules !!(keyValueList CaseRules.LowerFirst rules)
+        | Rules rules ->
+            let newRules =
+                rules
+                |> List.map (function
+                    | ValidateAsync f -> ValidatePromise (f >> Async.StartAsPromise)
+                    | r -> r)
+            Rules !!(keyValueList CaseRules.LowerFirst newRules)
         | p -> p
 
     let private realizeError e : ValidationError =

@@ -7,8 +7,9 @@ module Validation =
     type IntRule = { value: int; message: string }
     type DecimalRule = { value: decimal; message: string }
     type PatternRule = { value: Regex; message: string }
-    type CustomValidateRule = string -> string
-    type CustomValidateAsyncRule = string -> Promise<string>
+    type CustomValidateRule = string -> string option
+    type CustomValidateAsyncRule = string -> Async<string option>
+    type CustomValidatePromiseRule = string -> Promise<string option>
 
     type Rule =
         | Required of string
@@ -19,5 +20,6 @@ module Validation =
         | Pattern of PatternRule
         | Validate of CustomValidateRule
         | [<CompiledName("validate")>] ValidateAsync of CustomValidateAsyncRule
+        | [<CompiledName("validate")>] ValidatePromise of CustomValidatePromiseRule
 
     type ValidationError = { message: string }
