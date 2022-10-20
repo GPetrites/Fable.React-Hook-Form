@@ -8,7 +8,7 @@ module Controller =
     type UseControllerProps<'T, 'F> =
         | Control of Form.Control<'T>
         | Name of string
-        | Rules of Rule list
+        | Rules of Rule<'F> list
 
     type private ControllerRenderPropsInternal<'F> =
         { name: string

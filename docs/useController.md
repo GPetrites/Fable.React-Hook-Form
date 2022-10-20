@@ -38,7 +38,7 @@ Html.div [
 ]
 ```
 
-## controller.onChanged newValue
+## ```controller.onChanged newValue```
 
 Sets the field to a new value
 
@@ -60,7 +60,7 @@ Sets the field to a new value
     ]
 ```
 
-## controller.onChangedEvent event newValue
+## ```controller.onChangedEvent event newValue```
 
 Sets the field to a new value
 
@@ -84,7 +84,7 @@ Sets the field to a new value
     ]
 ```
 
-## controller.errorMessage
+## ```controller.errorMessage```
 If the field value is in error, the message for that error
 
 **Example**
@@ -102,7 +102,7 @@ If the field value is in error, the message for that error
 ```
 
 
-## controller.value
+## ```controller.value```
 
 The current value for the field
 

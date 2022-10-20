@@ -7,19 +7,19 @@ module Validation =
     type IntRule = { value: int; message: string }
     type DecimalRule = { value: decimal; message: string }
     type PatternRule = { value: Regex; message: string }
-    type CustomValidateRule = string -> string option
-    type CustomValidateAsyncRule = string -> Async<string option>
-    type CustomValidatePromiseRule = string -> Promise<string option>
+    type CustomValidateRule<'T> = 'T -> string option
+    type CustomValidateAsyncRule<'T> = 'T -> Async<string option>
+    type CustomValidatePromiseRule<'T> = 'T -> Promise<string option>
 
-    type Rule =
+    type Rule<'T> =
         | Required of string
         | MaxLength of IntRule
         | MinLength of IntRule
         | Max of DecimalRule
         | Min of DecimalRule
         | Pattern of PatternRule
-        | Validate of CustomValidateRule
-        | [<CompiledName("validate")>] ValidateAsync of CustomValidateAsyncRule
-        | [<CompiledName("validate")>] ValidatePromise of CustomValidatePromiseRule
+        | Validate of CustomValidateRule<'T>
+        | [<CompiledName("validate")>] ValidateAsync of CustomValidateAsyncRule<'T>
+        | [<CompiledName("validate")>] ValidatePromise of CustomValidatePromiseRule<'T>
 
     type ValidationError = { message: string }
