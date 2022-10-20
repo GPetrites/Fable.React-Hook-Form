@@ -30,20 +30,7 @@ let MyComponent () =
 
 ```
 
-## Return value from ```useForm```
-
-<table>
-<tr>
-    <th>Function or Value</th>
-    <th>Description</th>
-</tr>
-<tr>
-<td valign="top">
-
-[```form.formState```](https://react-hook-form.com/api/useform/formstate)
-
-</td>
-<td>
+## [```form.formState```](https://react-hook-form.com/api/useform/formstate)
 
 Used to examine the current condition of the form. Can be used to toggle buttons to indicate whether a form is ready to be submitted
 
@@ -55,29 +42,20 @@ Button.primaryButton
       Button.Disabled(not form.formState.isDirty) ]
     [ str "Submit" ]
 ```
-
-</td>
-</tr>
-<tr>
-<td valign="top">
-
-[```form.handleSubmit submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
-
-</td>
-<td>
+## [```form.handleSubmit submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
 Function to use to create a 
 
 **submitHandler :** ```'T -> unit```
-<br>Function to handle submit when the form is in a valid state
+Function to handle submit when the form is in a valid state
 
 > ```'T``` is the type supplied as ```DefaultValues```
 
 **errorHandler :** ```obj -> unit```
-<br>Function to handle submit when the for is in an invalid state
+Function to handle submit when the for is in an invalid state
 
 **Returns :** ```Browser.Types.Event -> unit```
-<br>A function to call to trigger a submit
+A function to call to trigger a submit
 
 **Example**
 
@@ -96,28 +74,20 @@ Html.div [
 ]
 ```
 
-</td>
-</tr>
-<tr>
-<td valign="top">
-
-[```form.handleSubmitAsync submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
-
-</td>
-<td>
+## [```form.handleSubmitAsync submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
 Function to use to create a 
 
 **submitHandler :** ```'T -> Async<unit>```
-<br>Function to handle submit when the form is in a valid state
+Function to handle submit when the form is in a valid state
 
 > ```'T``` is the type supplied as ```DefaultValues```
 
 **errorHandler :** ```obj -> Async<unit>```
-<br>Function to handle submit when the for is in an invalid state
+Function to handle submit when the for is in an invalid state
 
 **Returns :** ```Browser.Types.Event -> Async<unit>```
-<br>A function to call to trigger a submit
+A function to call to trigger a submit
 
 **Example**
 
@@ -143,20 +113,12 @@ Html.div [
 ]
 ```
 
-</td>
-</tr>
-<tr>
-<td valign="top">
-
-[```form.reset opts```](https://react-hook-form.com/api/useform/reset)
-
-</td>
-<td>
+## [```form.reset opts```](https://react-hook-form.com/api/useform/reset)
 
 Function that will return the form to it's initial state
 
 **opts :** ```ResetProps<'T> -> unit```
-<br>Options to pass to the reset function
+Options to pass to the reset function
 
 **Example**
 
@@ -165,7 +127,3 @@ Button.defaultButton
     [ Button.OnClick(fun e -> form.reset []) ]
     [ str "Reset" ]
 ```
-
-</td>
-</tr>
-</table>
