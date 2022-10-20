@@ -1,37 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Fable.React_Hook_Form</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageProjectUrl>https://gpetrites.github.io/Fable.React-Hook-Form</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GPetrites/Fable.React-Hook-Form</RepositoryUrl>
+    <Authors>Greg Petrites</Authors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Description>Fable bindings for react-hook-form</Description>
     <PackageTags>fsharp;fable;react;html</PackageTags>
-    <RepositoryUrl>https://github.com/GPetrites/Fable.React-Hook-Form</RepositoryUrl>
-    <Authors>Greg Petrites</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Include="..\readme.md" Pack="true" PackagePath="\"/>
+    <None Include="..\readme.md" Pack="true" PackagePath="\" />
     <Compile Include="Validation.fs" />
     <Compile Include="Form.fs" />
     <Compile Include="Controller.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Fable.Browser.Dom" Version="2.10.0" />
     <PackageReference Include="Fable.Core" Version="3.7.0" />
     <PackageReference Update="FSharp.Core" Version="6.0.4" />
   </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="*.fsproj; *.fs; *.js;" Exclude="**\*.fs.js" PackagePath="fable\" />
-    </ItemGroup>
-    <PropertyGroup>
-        <NpmDependencies>
-            <NpmPackage Name="react-hook-form" Version="gte 7.0.0" />
-        </NpmDependencies>
-    </PropertyGroup>
+  <ItemGroup>
+    <Content Include="*.fsproj; *.fs; *.js;" Exclude="**\*.fs.js" PackagePath="fable\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <NpmDependencies>
+      <NpmPackage Name="react-hook-form" Version="gte 7.0.0 lt 8.0" />
+    </NpmDependencies>
+  </PropertyGroup>
 </Project>

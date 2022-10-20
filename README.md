@@ -37,18 +37,17 @@ let TestForm () =
 
     let validateSync v =
         if v = "James" then
-            "Can't be James"
+            Some "Can't be James"
         else
-            ""
+            None
 
     let validateAsync v =
         async {
             if v = "Jones" then
-                return "Can't be Jones"
+                return Some "Can't be Jones"
             else
-                return ""
+                return None
         }
-        |> Async.StartAsPromise
 
     let firstName =
         useController form.control (fun x -> x.FirstName)
@@ -80,20 +79,20 @@ let TestForm () =
     Html.div [
         Html.span "Data Entry Form"
         Html.input [
-            prop.value firstName.field.value
-            prop.onChange firstName.field.onChange
+            prop.value firstName.value
+            prop.onChange firstName.onChange
         ]
         TextField.textField [ TextField.Label "First Name"
-                              TextField.Value firstName.field.value
-                              TextField.OnChange firstName.field.onChangeEvent
-                              TextField.ErrorMessage firstName.fieldState.error.message ] []
+                              TextField.Value firstName.value
+                              TextField.OnChange firstName.onChangeEvent
+                              TextField.ErrorMessage firstName.errorMessage ] []
         TextField.textField [ TextField.Label "Last Name"
-                              TextField.Value lastName.field.value
-                              TextField.OnChange lastName.field.onChangeEvent
-                              TextField.ErrorMessage lastName.fieldState.error.message ] []
+                              TextField.Value lastName.value
+                              TextField.OnChange lastName.onChangeEvent
+                              TextField.ErrorMessage lastName.errorMessage ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
-                                SpinButton.Value (age.field.value.ToString()) ] []
-        Button.defaultButton [ Button.OnClick(fun e -> form.reset ())
+                                SpinButton.Value (age.value.ToString()) ] []
+        Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"
         ]
@@ -106,7 +105,7 @@ let TestForm () =
 
 `NOTE:` While the above sample show the use of `Fable.FluentUI`, this library can be used with any UI framework. And while it uses `Feliz` for defining a functional component, it should support `FunctionComponent.Of(...)` from `Fable.React`.
 
-`NOTE:` This is very much an early release which includes just a small subset of the PrimeReact controls and properties, It should be a solid foundation for extending into the other controls. Issue requesting new features are very much welcome.
+> `NOTE:` This is very much an early release which includes just a small subset of the PrimeReact controls and properties, It should be a solid foundation for extending into the other controls. Issue requesting new features are very much welcome.
 
 ## Installation
 

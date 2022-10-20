@@ -1,3 +1,9 @@
+# Fable.React-Hook-Form
+Fable bindings for [React-Hook-Form](https://react-hook-form.com/)
+
+Here's how it looks:
+
+```fs
 module TestForm
 
 open Browser.Dom
@@ -11,7 +17,6 @@ open Fable.ReactHookForm.Validation
 open System.Text.RegularExpressions
 
 type IDataNested = { Age: int }
-
 type IData =
     { FirstName: string
       LastName: string
@@ -45,25 +50,27 @@ let TestForm () =
         }
 
     let firstName =
-        useController
-            form.control
-            (fun x -> x.FirstName)
+        useController form.control (fun x -> x.FirstName)
             [ Rules [
                   Required "First name is required"
-                  MinLength(4, "Min length 4")
-                  MaxLength(50, "Max length 50")
-                  Pattern("^[A-Z].?", "Must start with capital")
+                  MinLength { value = 4; message = "Min length 4" }
+                  MaxLength
+                      { value = 50
+                        message = "Max length 50" }
+                  Pattern
+                      { value = new Regex("^[A-Z].?")
+                        message = "Must start with capital" }
                   Validate validateSync
               ] ]
 
     let lastName =
-        useController form.control (fun x -> x.LastName) [ Rules [ ValidateAsync validateAsync ] ]
+        useController form.control (fun x -> x.LastName)
+            [ Rules [ ValidateAsync validateAsync ] ]
 
-    let age = useController form.control (fun x -> x.Nested.Age) []
+    let age =
+        useController form.control (fun x -> x.Nested.Age ) []
 
-    let submit (v: IData) =
-        console.log ("Submit", v)
-        form.reset [ Values v ]
+    let submit (v: IData) = console.log ("Submit", v)
 
     let error (v: obj) = console.log ("Error", v)
 
@@ -84,7 +91,7 @@ let TestForm () =
                               TextField.OnChange lastName.onChangeEvent
                               TextField.ErrorMessage lastName.errorMessage ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
-                                SpinButton.Value(age.value.ToString()) ] []
+                                SpinButton.Value (age.value.ToString()) ] []
         Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"
@@ -94,3 +101,26 @@ let TestForm () =
             str "Submit"
         ]
     ]
+```
+
+`NOTE:` While the above sample show the use of `Fable.FluentUI`, this library can be used with any UI framework. And while it uses `Feliz` for defining a functional component, it should support `FunctionComponent.Of(...)` from `Fable.React`.
+
+> `NOTE:` This is very much an early release which includes just a small subset of the PrimeReact controls and properties, It should be a solid foundation for extending into the other controls. Issue requesting new features are very much welcome.
+
+## Installation
+
+Run `femto install Fable.React-Hook-Form` from inside your project directory.
+
+## Source code
+
+Found in `./Fable.React-Hook-Form`
+
+## Samples
+
+Samples are found in `./sample`.
+
+## Contributing
+
+In root folder:
+- Run `yarn` to install npm packages
+- Run `yarn start` to start the sample application to test changes
