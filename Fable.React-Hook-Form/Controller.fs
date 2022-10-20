@@ -5,6 +5,7 @@ open Fable.Core.JsInterop
 open Fable.ReactHookForm.Validation
 
 module Controller =
+    open System.Text.RegularExpressions
     type UseControllerProps<'T, 'F> =
         | Control of Form.Control<'T>
         | Name of string
@@ -50,14 +51,19 @@ module Controller =
           error: ValidationError
           errorMessage: string }
 
+    let private mapRules = function
+        | ValidateAsync f -> ValidatePromise(f >> Async.StartAsPromise)
+        | MinLength (v,m) -> MinLength' { value = v; message = m }
+        | MaxLength (v,m) -> MaxLength' { value = v; message = m }
+        | Min (v,m) -> Min' { value = v; message = m }
+        | Max (v,m) -> Max' { value = v; message = m }
+        | Pattern (v,m) -> Pattern' { value = new Regex(v); message = m }
+        | r -> r
+
     let private flattenRules prop =
         match prop with
         | Rules rules ->
-            let newRules =
-                rules
-                |> List.map (function
-                    | ValidateAsync f -> ValidatePromise(f >> Async.StartAsPromise)
-                    | r -> r)
+            let newRules = rules |> List.map mapRules
 
             Rules !!(keyValueList CaseRules.LowerFirst newRules)
         | p -> p

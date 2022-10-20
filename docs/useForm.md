@@ -2,7 +2,7 @@
 
 ```useForm``` provides Fable bindings for [```useForm```](https://react-hook-form.com/api/useform)
 
-## [useForm props](https://react-hook-form.com/api/useform)
+## [```useForm props```](https://react-hook-form.com/api/useform)
 
 **props :** ```UseFormProps<'T> list```
 <br>Options for defining the form and state management.
@@ -70,8 +70,13 @@ Creates a Function which can be usee to initiate submitting a form.
 **Example**
 
 ```fsharp
-let submit (v: IData) = console.log ("Submit", v)
-let error (v: obj) = console.log ("Error", v)
+let submit (v: IData) = 
+    ...
+    ()
+
+let error (v: obj) = 
+    ...
+    ()
 
 let handleSubmit = form.handleSubmit submit error
 

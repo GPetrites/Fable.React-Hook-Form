@@ -13,11 +13,22 @@ module Validation =
 
     type Rule<'T> =
         | Required of string
-        | MaxLength of IntRule
-        | MinLength of IntRule
-        | Max of DecimalRule
-        | Min of DecimalRule
-        | Pattern of PatternRule
+
+        | MaxLength of int * string
+        | [<CompiledName("maxLength")>] MaxLength' of IntRule
+
+        | MinLength of int * string
+        | [<CompiledName("maxLength")>] MinLength' of IntRule
+
+        | Max of decimal * string
+        | [<CompiledName("max")>] Max' of DecimalRule
+
+        | Min of decimal * string
+        | [<CompiledName("mmin")>] Min' of DecimalRule
+
+        | Pattern of string * string
+        | [<CompiledName("pattern")>] Pattern' of PatternRule
+
         | Validate of CustomValidateRule<'T>
         | [<CompiledName("validate")>] ValidateAsync of CustomValidateAsyncRule<'T>
         | [<CompiledName("validate")>] ValidatePromise of CustomValidatePromiseRule<'T>

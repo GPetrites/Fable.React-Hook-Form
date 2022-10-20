@@ -11,6 +11,7 @@ open Fable.ReactHookForm.Validation
 open System.Text.RegularExpressions
 
 type IDataNested = { Age: int }
+
 type IData =
     { FirstName: string
       LastName: string
@@ -44,27 +45,23 @@ let TestForm () =
         }
 
     let firstName =
-        useController form.control (fun x -> x.FirstName)
+        useController
+            form.control
+            (fun x -> x.FirstName)
             [ Rules [
                   Required "First name is required"
-                  MinLength { value = 4; message = "Min length 4" }
-                  MaxLength
-                      { value = 50
-                        message = "Max length 50" }
-                  Pattern
-                      { value = new Regex("^[A-Z].?")
-                        message = "Must start with capital" }
+                  MinLength(4, "Min length 4")
+                  MaxLength(50, "Max length 50")
+                  Pattern("^[A-Z].?", "Must start with capital")
                   Validate validateSync
               ] ]
 
     let lastName =
-        useController form.control (fun x -> x.LastName)
-            [ Rules [ ValidateAsync validateAsync ] ]
+        useController form.control (fun x -> x.LastName) [ Rules [ ValidateAsync validateAsync ] ]
 
-    let age =
-        useController form.control (fun x -> x.Nested.Age ) []
+    let age = useController form.control (fun x -> x.Nested.Age) []
 
-    let submit (v: IData) = 
+    let submit (v: IData) =
         console.log ("Submit", v)
         form.reset [ Values v ]
 
@@ -87,7 +84,7 @@ let TestForm () =
                               TextField.OnChange lastName.onChangeEvent
                               TextField.ErrorMessage lastName.errorMessage ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
-                                SpinButton.Value (age.value.ToString()) ] []
+                                SpinButton.Value(age.value.ToString()) ] []
         Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"

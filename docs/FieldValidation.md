@@ -11,24 +11,49 @@ let firstName =
     useController form.control (fun x -> x.FirstName)
         [ Rules [
               Required "First name is required"
-              MinLength { value = 4; message = "Min length 4" }
-              MaxLength
-                  { value = 50
-                    message = "Max length 50" }
-              Pattern
-                  { value = new Regex("^[A-Z].?")
-                    message = "Must start with capital" }
+              MinLength(4, "Min length 4")
+              MaxLength(50, "Max length 50")
+              Pattern("^[A-Z].?", "Must start with capital")
               Validate validateSync
           ] ]
 ```
 
-## Custom validation
+## Standard validation
 
-Custom validation can be perform either synchronous or asynchronous.
+The standard validation rules have been implemented as a pair of rules which receive either:
+- A tuple with the error message as the second parameter
+- An object matching the Reach-Hook-Form API
 
-### Validate validate
+The tupled rule is preferred as being more concise and will use the standard name. The object rule will use the name of the rule followed by the ' character.
 
-**validate :** 'F -> string option
+**Example **
+
+```fsharp
+let firstName =
+    useController form.control (fun x -> x.FirstName)
+        [ Rules [
+              Required "First name is required"
+              MinLength(4, "Min length 4")
+              MaxLength(50, "Max length 50")
+              Pattern("^[A-Z].?", "Must start with capital")
+          ] ]
+
+let lastName =
+    useController form.control (fun x -> x.LaststName)
+        [ Rules [
+              Required "Last name is required"
+              MinLength' { value = 4; message = "Min length 4" }
+              MaxLength' { value = 50; message = "Max length 50" }
+              Pattern' { value = new Regex("^[A-Z].?"), message = "Must start with capital" }
+          ] ]
+
+```
+
+
+
+## ```Validate validate```
+
+**validate :** ```'F -> string option```
 <br>A function which receives the current value of the field and returns either None, if no error, or Some which contains the error message
 
 **Example**
@@ -45,9 +70,9 @@ let fld = useController form.control (fun f -> f.Field)
     ]
 ```
 
-### ValidateAsync validateAsync
+## ```ValidateAsync validateAsync```
 
-**validate :** 'F -> Async<string option>
+**validateAsync :** ```'F -> Async<string option>```
 <br>A function which receives the current value of the field and returns either None, if no error, or Some which contains the error message
 
 **Example**
