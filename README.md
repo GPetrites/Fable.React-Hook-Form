@@ -92,7 +92,7 @@ let TestForm () =
                               TextField.ErrorMessage lastName.fieldState.error.message ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
                                 SpinButton.Value (age.field.value.ToString()) ] []
-        Button.defaultButton [ Button.OnClick(fun e -> form.reset ())
+        Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"
         ]

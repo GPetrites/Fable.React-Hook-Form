@@ -1,6 +1,10 @@
 # useForm
 
-useForm provides Fable bindings for [```useForm```](https://react-hook-form.com/api/useform)
+```useForm``` provides Fable bindings for [```useForm```](https://react-hook-form.com/api/useform)
+
+```useForm``` create an object to provide state management for an entire input form. The object will track things like:
+- Has the user made changes to the form data (```isDirty```)
+- Does the form pass all validations (```isValid```)
 
 To define a form, first define a type and a default value for the form. Next, call useForm passing in the update mode and default object.
 
@@ -57,18 +61,21 @@ Button.primaryButton
 <tr>
 <td valign="top">
 
-[```form.reset ```](https://react-hook-form.com/api/useform/reset)
+[```form.reset opts```](https://react-hook-form.com/api/useform/reset)
 
 </td>
 <td>
 
 Function that will return the form to it's initial state
 
+**opts :** ```ResetProps<'T> -> unit```
+<br>Options to pass to the reset function
+
 **Example**
 
 ```fsharp
 Button.defaultButton
-    [ Button.OnClick(fun e -> form.reset ()) ]
+    [ Button.OnClick(fun e -> form.reset []) ]
     [ str "Reset" ]
 ```
 
@@ -77,7 +84,7 @@ Button.defaultButton
 <tr>
 <td valign="top">
 
-[```form.handleSubmit submitHandler errorHandler ()```](https://react-hook-form.com/api/useform/reset)
+[```form.handleSubmit submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
 </td>
 <td>
@@ -87,10 +94,12 @@ Function to use to create a
 **submitHandler :** ```'T -> unit```
 <br>Function to handle submit when the form is in a valid state
 
+> ```'T``` is the type supplied as ```DefaultValues```
+
 **errorHandler :** ```obj -> unit```
 <br>Function to handle submit when the for is in an invalid state
 
-**Returns :** ```unit -> unit```
+**Returns :** ```Browser.Types.Event -> unit```
 <br>A function to call to trigger a submit
 
 **Example**

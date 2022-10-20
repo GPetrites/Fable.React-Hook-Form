@@ -64,7 +64,9 @@ let TestForm () =
     let age =
         useController form.control (fun x -> x.Nested.Age ) []
 
-    let submit (v: IData) = console.log ("Submit", v)
+    let submit (v: IData) = 
+        console.log ("Submit", v)
+        form.reset [ Values v ]
 
     let error (v: obj) = console.log ("Error", v)
 
@@ -86,7 +88,7 @@ let TestForm () =
                               TextField.ErrorMessage lastName.fieldState.error.message ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
                                 SpinButton.Value (age.field.value.ToString()) ] []
-        Button.defaultButton [ Button.OnClick(fun e -> form.reset ())
+        Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"
         ]
