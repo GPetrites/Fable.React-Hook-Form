@@ -25,7 +25,7 @@ Returns an object which provides state management for a single values on the for
 **Example**
 
 ```fsharp
-let firstName = useController form.controller (fun x -> x.FirstName) []
+let firstName = useController form.control (fun x -> x.FirstName) []
 
 Html.div [
     ...

@@ -50,7 +50,7 @@ let TestForm () =
         }
 
     let firstName =
-        useController form (fun x -> x.FirstName)
+        useController form.control (fun x -> x.FirstName)
             [ Rules [
                   Required "First name is required"
                   MinLength { value = 4; message = "Min length 4" }
@@ -64,11 +64,11 @@ let TestForm () =
               ] ]
 
     let lastName =
-        useController form (fun x -> x.LastName)
+        useController form.control (fun x -> x.LastName)
             [ Rules [ ValidateAsync validateAsync ] ]
 
     let age =
-        useController form (fun x -> x.Nested.Age ) []
+        useController form.control (fun x -> x.Nested.Age ) []
 
     let submit (v: IData) = console.log ("Submit", v)
 

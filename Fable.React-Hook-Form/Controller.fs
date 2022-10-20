@@ -5,10 +5,8 @@ open Fable.Core.JsInterop
 open Fable.ReactHookForm.Validation
 
 module Controller =
-    type Control<'T> = { register: obj; unregister: obj }
-
     type UseControllerProps<'T, 'F> =
-        | Control of Control<'T>
+        | Control of Form.Control<'T>
         | Name of string
         | Rules of Rule list
 
@@ -17,7 +15,7 @@ module Controller =
           value: 'F
           onChange: (Browser.Types.Event -> 'F -> unit) }
 
-    type private ControllerRenderProps<'F> =
+    type ControllerRenderProps<'F> =
         { name: string
           value: 'F
           onChange: ('F -> unit)
@@ -95,7 +93,7 @@ module Controller =
           onChangeEvent = r.field.onChange }
 
     let inline useController<'T, 'F>
-        (control: Control<'T>)
+        (control: Form.Control<'T>)
         (field: ('T -> 'F))
         (props: UseControllerProps<'T, 'F> list)
         : UseControllerReturn<'T, 'F> =
