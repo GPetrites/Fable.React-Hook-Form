@@ -15,13 +15,13 @@ module Controller =
           value: 'F
           onChange: (Browser.Types.Event -> 'F -> unit) }
 
-    type ControllerRenderProps<'F> =
+    type private ControllerRenderProps<'F> =
         { name: string
           value: 'F
           onChange: ('F -> unit)
           onChangeEvent: (Browser.Types.Event -> 'F -> unit) }
 
-    type ControllerFieldStateInternal =
+    type private ControllerFieldStateInternal =
         { invalid: bool
           isTouched: bool
           isDirty: bool
@@ -38,8 +38,15 @@ module Controller =
           fieldState: ControllerFieldStateInternal }
 
     type UseControllerReturn<'T,'F> =
-        { field: ControllerRenderProps<'F>
-          fieldState: ControllerFieldState }
+        { name: string
+          value: 'F
+          onChange: ('F -> unit)
+          onChangeEvent: (Browser.Types.Event -> 'F -> unit)
+          invalid: bool
+          isTouched: bool
+          isDirty: bool
+          error: ValidationError
+          errorMessage : string }
 
     let private flattenRules prop =
         match prop with
@@ -52,11 +59,6 @@ module Controller =
             Rules !!(keyValueList CaseRules.LowerFirst newRules)
         | p -> p
 
-    let private realizeError e : ValidationError =
-        match e with
-        | None -> { message = "" }
-        | Some e -> e
-
     let internalUseController<'T,'F> (props: UseControllerProps<'T,'F> list) : UseControllerReturn<'T,'F> =
         let newProps =
             props
@@ -65,18 +67,17 @@ module Controller =
         let r: UseControllerReturnInternal<'F> =
             import "useController" "react-hook-form" (keyValueList CaseRules.LowerFirst newProps)
 
-        { fieldState =
-            { invalid = r.fieldState.invalid
-              isTouched = r.fieldState.isTouched
-              isDirty = r.fieldState.isDirty
-              error = (realizeError r.fieldState.error) }
-          field =
-            { name = r.field.name
-              value = r.field.value
-              onChange = !!r.field.onChange
-              onChangeEvent = r.field.onChange } }
+        { invalid = r.fieldState.invalid
+          isTouched = r.fieldState.isTouched
+          isDirty = r.fieldState.isDirty
+          error = r.fieldState.error |> Option.defaultValue { message = ""}
+          errorMessage = r.fieldState.error |> Option.map (fun e -> e.message) |> Option.defaultValue ""
+          name = r.field.name
+          value = r.field.value
+          onChange = !!r.field.onChange
+          onChangeEvent = r.field.onChange }
 
-    let inline useController<'T,'F> (control: Form.Control<'T>) (field: ('T -> 'F))  (props: UseControllerProps<'T,'F> list) : UseControllerReturn<'T,'F> =
+    let inline useController<'T,'F> (form: Form.UseFormReturn<'T>) (field: ('T -> 'F))  (props: UseControllerProps<'T,'F> list) : UseControllerReturn<'T,'F> =
         let name = Experimental.namesofLambda(field) |> String.concat "."
 
-        internalUseController<'T,'F> (Control control :: Name name :: props)
+        internalUseController<'T,'F> (Control form.control :: Name name :: props)

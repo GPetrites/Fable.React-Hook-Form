@@ -2,9 +2,19 @@
 
 ```useForm``` provides Fable bindings for [```useForm```](https://react-hook-form.com/api/useform)
 
-```useForm``` create an object to provide state management for an entire input form. The object will track things like:
+## [useForm props](https://react-hook-form.com/api/useform)
+
+**props :** ```UseFormProps<'T> list```
+<br>Options for defining the form and state management.
+
+**Returns** ```UseFormReturn<'T>```
+<br>An object which provides state management for an entire input form. The object will track conditions such as:
 - Has the user made changes to the form data (```isDirty```)
 - Does the form pass all validations (```isValid```)
+
+The state management object also provides methods for interacting with the form state including:
+- Submitting the form (```handleSubmit```)
+- Resetting the form states (```reset```)
 
 To define a form, first define a type and a default value for the form. Next, call useForm passing in the update mode and default object.
 
@@ -44,18 +54,18 @@ Button.primaryButton
 ```
 ## [```form.handleSubmit submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
-Function to use to create a 
+Creates a Function which can be usee to initiate submitting a form.
 
 **submitHandler :** ```'T -> unit```
-Function to handle submit when the form is in a valid state
+<br>Function to handle submit when the form is in a valid state
 
 > ```'T``` is the type supplied as ```DefaultValues```
 
 **errorHandler :** ```obj -> unit```
-Function to handle submit when the for is in an invalid state
+<br>Function to handle submit when the for is in an invalid state
 
 **Returns :** ```Browser.Types.Event -> unit```
-A function to call to trigger a submit
+<br>A function to call to trigger a submit
 
 **Example**
 
@@ -76,18 +86,18 @@ Html.div [
 
 ## [```form.handleSubmitAsync submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
-Function to use to create a 
+Creates a Function which can be usee to initiate submitting a form.
 
 **submitHandler :** ```'T -> Async<unit>```
-Function to handle submit when the form is in a valid state
+<br>Function to handle submit when the form is in a valid state
 
 > ```'T``` is the type supplied as ```DefaultValues```
 
 **errorHandler :** ```obj -> Async<unit>```
-Function to handle submit when the for is in an invalid state
+<br>Function to handle submit when the for is in an invalid state
 
 **Returns :** ```Browser.Types.Event -> Async<unit>```
-A function to call to trigger a submit
+<br>A function to call to trigger a submit
 
 **Example**
 
@@ -118,7 +128,7 @@ Html.div [
 Function that will return the form to it's initial state
 
 **opts :** ```ResetProps<'T> -> unit```
-Options to pass to the reset function
+<br>Options to pass to the reset function
 
 **Example**
 

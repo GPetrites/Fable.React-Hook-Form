@@ -44,7 +44,7 @@ let TestForm () =
         }
 
     let firstName =
-        useController form.control (fun x -> x.FirstName)
+        useController form (fun x -> x.FirstName)
             [ Rules [
                   Required "First name is required"
                   MinLength { value = 4; message = "Min length 4" }
@@ -58,11 +58,11 @@ let TestForm () =
               ] ]
 
     let lastName =
-        useController form.control (fun x -> x.LastName)
+        useController form (fun x -> x.LastName)
             [ Rules [ ValidateAsync validateAsync ] ]
 
     let age =
-        useController form.control (fun x -> x.Nested.Age ) []
+        useController form (fun x -> x.Nested.Age ) []
 
     let submit (v: IData) = 
         console.log ("Submit", v)
@@ -75,19 +75,19 @@ let TestForm () =
     Html.div [
         Html.span "Data Entry Form"
         Html.input [
-            prop.value firstName.field.value
-            prop.onChange firstName.field.onChange
+            prop.value firstName.value
+            prop.onChange firstName.onChange
         ]
         TextField.textField [ TextField.Label "First Name"
-                              TextField.Value firstName.field.value
-                              TextField.OnChange firstName.field.onChangeEvent
-                              TextField.ErrorMessage firstName.fieldState.error.message ] []
+                              TextField.Value firstName.value
+                              TextField.OnChange firstName.onChangeEvent
+                              TextField.ErrorMessage firstName.errorMessage ] []
         TextField.textField [ TextField.Label "Last Name"
-                              TextField.Value lastName.field.value
-                              TextField.OnChange lastName.field.onChangeEvent
-                              TextField.ErrorMessage lastName.fieldState.error.message ] []
+                              TextField.Value lastName.value
+                              TextField.OnChange lastName.onChangeEvent
+                              TextField.ErrorMessage lastName.errorMessage ] []
         SpinButton.spinButton [ SpinButton.Label "Age"
-                                SpinButton.Value (age.field.value.ToString()) ] []
+                                SpinButton.Value (age.value.ToString()) ] []
         Button.defaultButton [ Button.OnClick(fun e -> form.reset [])
                                Button.Disabled(not form.formState.isDirty) ] [
             str "Reset"
