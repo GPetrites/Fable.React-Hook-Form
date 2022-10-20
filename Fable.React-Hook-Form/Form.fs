@@ -40,8 +40,6 @@ module Form =
           isValidating: bool
           isValid: bool }
 
-    type Control<'T> = { register: obj; unregister: obj }
-
     type SubmitHandler<'T> = 'T -> unit
     type SubmitErrorHandler = obj -> unit
     type private SubmitHandlerPromise<'T> = 'T -> Promise<unit>
@@ -50,14 +48,14 @@ module Form =
     type SubmitErrorHandlerAsync = obj -> Async<unit>
 
     type private UseFormReturnInternal<'T> =
-        { control: Control<'T>
+        { control: Controller.Control<'T>
           handleSubmit: SubmitHandlerPromise<'T> -> SubmitErrorHandlerPromise -> Func<Browser.Types.Event, unit>
           reset: obj -> obj -> unit
           formState: FormState<'T>
           getValues: obj }
 
     type UseFormReturn<'T> =
-        { control: Control<'T>
+        { control: Controller.Control<'T>
           handleSubmit: SubmitHandler<'T> -> SubmitErrorHandler -> Browser.Types.Event -> unit
           handleSubmitAsync: SubmitHandlerAsync<'T> -> SubmitErrorHandlerAsync -> Browser.Types.Event -> unit
           reset: ResetProps<'T> list -> unit
@@ -86,11 +84,11 @@ module Form =
 
             let newValue =
                 List.tryHead v
-                |> Option.map (function 
-                    | Values v -> Some v 
+                |> Option.map (function
+                    | Values v -> Some v
                     | _ -> None)
                 |> Option.flatten
-                
+
 
             keyValueList CaseRules.LowerFirst o
             |> r.reset newValue

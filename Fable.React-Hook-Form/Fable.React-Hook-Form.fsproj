@@ -15,8 +15,8 @@
   <ItemGroup>
     <None Include="..\readme.md" Pack="true" PackagePath="\" />
     <Compile Include="Validation.fs" />
-    <Compile Include="Form.fs" />
     <Compile Include="Controller.fs" />
+    <Compile Include="Form.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Browser.Dom" Version="2.10.0" />

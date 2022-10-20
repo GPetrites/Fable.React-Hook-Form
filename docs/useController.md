@@ -6,10 +6,8 @@
 
 Returns an object which provides state management for a single values on the form.
 
-**form :** ```UseFormReturn<'T>```
+**control :** ```Controller.Control<'T>```
 <br>The form state management object
-
-> For ease of use, unlike the underlying React-Hook-Form this binding takes in the entire state management object and not just the ```form.control``` property.
 
 **field :** ```'T -> 'F```
 <br>A function which references the field on the object to be managed by this controller.
@@ -27,7 +25,7 @@ Returns an object which provides state management for a single values on the for
 **Example**
 
 ```fsharp
-let firstName = useController form (fun x -> x.FirstName) []
+let firstName = useController form.controller (fun x -> x.FirstName) []
 
 Html.div [
     ...
