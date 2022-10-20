@@ -61,29 +61,6 @@ Button.primaryButton
 <tr>
 <td valign="top">
 
-[```form.reset opts```](https://react-hook-form.com/api/useform/reset)
-
-</td>
-<td>
-
-Function that will return the form to it's initial state
-
-**opts :** ```ResetProps<'T> -> unit```
-<br>Options to pass to the reset function
-
-**Example**
-
-```fsharp
-Button.defaultButton
-    [ Button.OnClick(fun e -> form.reset []) ]
-    [ str "Reset" ]
-```
-
-</td>
-</tr>
-<tr>
-<td valign="top">
-
 [```form.handleSubmit submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
 
 </td>
@@ -121,5 +98,74 @@ Html.div [
 
 </td>
 </tr>
-</table>
+<tr>
+<td valign="top">
 
+[```form.handleSubmitAsync submitHandler errorHandler```](https://react-hook-form.com/api/useform/reset)
+
+</td>
+<td>
+
+Function to use to create a 
+
+**submitHandler :** ```'T -> Async<unit>```
+<br>Function to handle submit when the form is in a valid state
+
+> ```'T``` is the type supplied as ```DefaultValues```
+
+**errorHandler :** ```obj -> Async<unit>```
+<br>Function to handle submit when the for is in an invalid state
+
+**Returns :** ```Browser.Types.Event -> Async<unit>```
+<br>A function to call to trigger a submit
+
+**Example**
+
+```fsharp
+let submit (v: IData) = 
+    async {
+        ...
+    }
+
+let error (v: obj) = 
+    async {
+        ...
+    }
+
+let handleSubmit = form.handleSubmitAsync submit error
+
+Html.div [
+    ...
+    Button.primaryButton
+        [ Button.OnClick handleSubmit ]
+        [ str "Submit" ]
+    ...
+]
+```
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+[```form.reset opts```](https://react-hook-form.com/api/useform/reset)
+
+</td>
+<td>
+
+Function that will return the form to it's initial state
+
+**opts :** ```ResetProps<'T> -> unit```
+<br>Options to pass to the reset function
+
+**Example**
+
+```fsharp
+Button.defaultButton
+    [ Button.OnClick(fun e -> form.reset []) ]
+    [ str "Reset" ]
+```
+
+</td>
+</tr>
+</table>
