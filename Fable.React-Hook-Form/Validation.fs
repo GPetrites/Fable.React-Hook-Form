@@ -8,7 +8,7 @@ module Validation =
     type DecimalRule = { value: decimal; message: string }
     type PatternRule = { value: Regex; message: string }
     type CustomValidateRule<'T> = 'T -> Result<'T,string>
-    type CustomValidateRule'<'T> = 'T -> string option
+    type CustomValidateRule'<'T> = 'T -> Option<string>
     type CustomValidateAsyncRule<'T> = 'T -> Async<Result<'T,string>>
     type CustomValidatePromiseRule<'T> = 'T -> Promise<string option>
 
