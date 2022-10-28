@@ -3,9 +3,10 @@ namespace Fable.ReactHookForm
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.ReactHookForm.Validation
+open System.Text.RegularExpressions
+open Fable.Core.JS
 
 module Controller =
-    open System.Text.RegularExpressions
     type UseControllerProps<'T, 'F> =
         | Control of Form.Control<'T>
         | Name of string
@@ -51,8 +52,21 @@ module Controller =
           error: ValidationError
           errorMessage: string }
 
+    let mapResultToOption (result: Result<'T,string>) : string option =
+        match result with
+        | Ok _ -> None
+        | Error msg -> Some msg
+
+    let mapAsyncResultToOption (result: Async<Result<'T,string>> ) : Promise<string option> =
+        async {
+            let! result' = result
+
+            return (mapResultToOption result')
+        } |> Async.StartAsPromise
+
     let private mapRules = function
-        | ValidateAsync f -> ValidatePromise(f >> Async.StartAsPromise)
+        | Validate f -> Validate'(f >> mapResultToOption)
+        | ValidateAsync f -> ValidatePromise(f >> mapAsyncResultToOption)
         | MinLength (v,m) -> MinLength' { value = v; message = m }
         | MaxLength (v,m) -> MaxLength' { value = v; message = m }
         | Min (v,m) -> Min' { value = v; message = m }
