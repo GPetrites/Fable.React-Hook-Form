@@ -96,3 +96,40 @@ let fld = useController form.control (fun f -> f.Field)
         [ ValidateAsync validateAsync ]
     ]
 ```
+
+## Integration with existing validation frameworks
+
+Validation logic can easily be adapted to integrate with validation frameworks such as [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling) or [Validus](https://github.com/pimbrouwers/Validus) by writing adapters to convert validation results into ```Result<'T,string>```.
+
+For example, if the framework returns ```Result<'T,string list>```, the following logic can convert this into the expected type for React-Hook-Form:
+
+```fsharp
+    // Convert Result<'T, string list> to Result<'T,string>
+    let mapError result =
+        result |> Result.mapError List.head
+
+    // Create a validate rule using 'T -> Result<'T, string list>
+    let validate v =
+        Validate (v >> mapError)
+
+    // Create Rules using 'T -> Result<'T, string list>
+    let rule v =
+        Rules [ Validate (v >> mapError) ]
+```
+
+The above adapters would now support:
+
+```fsharp
+    let validateName name : Result<string, string list> =
+        ...
+
+    let name = useController
+        form.control
+        (fun f -> f.Name)
+        [ Rules [ validate validateName ]]
+
+    let name' = useController
+        form.control
+        (fun f -> f.Name)
+        [ rules validateName ]
+```

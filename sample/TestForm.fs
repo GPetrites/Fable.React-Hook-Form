@@ -6,9 +6,6 @@ open Fable.Core
 open Fable.React
 open Fable.FluentUI
 open Fable.ReactHookForm
-open Fable.ReactHookForm.Form
-open Fable.ReactHookForm.Controller
-open Fable.ReactHookForm.Validation
 open System.Text.RegularExpressions
 
 type IDataNested = { Age: int }

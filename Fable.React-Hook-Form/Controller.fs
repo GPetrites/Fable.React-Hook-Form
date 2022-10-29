@@ -2,10 +2,10 @@ namespace Fable.ReactHookForm
 
 open Fable.Core
 open Fable.Core.JsInterop
-open Fable.ReactHookForm.Validation
 open System.Text.RegularExpressions
 open Fable.Core.JS
 
+[<AutoOpen>]
 module Controller =
     type UseControllerProps<'T, 'F> =
         | Control of Form.Control<'T>
@@ -23,17 +23,19 @@ module Controller =
           onChange: ('F -> unit)
           onChangeEvent: (Browser.Types.Event -> 'F -> unit) }
 
+    type ControllerValidationError = { message: string }
+
     type private ControllerFieldStateInternal =
         { invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError option }
+          error: ControllerValidationError option }
 
     type ControllerFieldState =
         { invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError }
+          error: ControllerValidationError }
 
     type private UseControllerReturnInternal<'F> =
         { field: ControllerRenderPropsInternal<'F>
@@ -49,7 +51,7 @@ module Controller =
           invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError
+          error: ControllerValidationError
           errorMessage: string }
 
     let private mapResultToOption (result: Result<'T, string>) : string option =

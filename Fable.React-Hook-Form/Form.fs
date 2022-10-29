@@ -5,10 +5,11 @@ open Fable.Core.JsInterop
 open System
 open Fable.Core.JS
 
+[<AutoOpen>]
 module Form =
 
     [<StringEnum>]
-    type ValidationMode =
+    type FormValidation =
         | OnBlur
         | OnChange
         | OnSubmit
@@ -16,10 +17,10 @@ module Form =
         | All
 
     type UseFormProps<'T> =
-        | Mode of ValidationMode
+        | Mode of FormValidation
         | DefaultValues of 'T
 
-    type ResetProps<'T> =
+    type FormResetProps<'T> =
         | Values of 'T
         | KeepErrors of bool
         | KeepDirty of bool
@@ -60,7 +61,7 @@ module Form =
         { control: Control<'T>
           handleSubmit: SubmitHandler<'T> -> SubmitErrorHandler -> Browser.Types.Event -> unit
           handleSubmitAsync: SubmitHandlerAsync<'T> -> SubmitErrorHandlerAsync -> Browser.Types.Event -> unit
-          reset: ResetProps<'T> list -> unit
+          reset: FormResetProps<'T> list -> unit
           formState: FormState<'T>
           getValues: obj }
 
@@ -77,7 +78,7 @@ module Form =
             let ep = e >> Async.StartAsPromise
             (r.handleSubmit sp ep).Invoke
 
-        let reset (opts: ResetProps<'T> list) =
+        let reset (opts: FormResetProps<'T> list) =
             let (v, o) =
                 opts
                 |> List.partition (function

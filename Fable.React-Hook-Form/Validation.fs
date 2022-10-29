@@ -3,6 +3,7 @@ namespace Fable.ReactHookForm
 open System.Text.RegularExpressions
 open Fable.Core.JS
 
+[<AutoOpen>]
 module Validation =
     type RuleIntProp = { value: int; message: string }
     type RuleDecimalProp = { value: decimal; message: string }
@@ -34,5 +35,3 @@ module Validation =
         | [<CompiledName("validate")>] ValidateOption of RuleValidateOption<'T>
         | [<CompiledName("validate")>] ValidateAsync of RuleValidateAsyncResult<'T>
         | [<CompiledName("validate")>] ValidatePromise of RuleValidatePromiseOption<'T>
-
-    type ValidationError = { message: string }
