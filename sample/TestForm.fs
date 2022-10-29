@@ -5,9 +5,7 @@ open Feliz
 open Fable.Core
 open Fable.React
 open Fable.FluentUI
-open Fable.ReactHookForm.Form
-open Fable.ReactHookForm.Controller
-open Fable.ReactHookForm.Validation
+open Fable.ReactHookForm
 open System.Text.RegularExpressions
 
 type IDataNested = { Age: int }
@@ -32,16 +30,16 @@ let TestForm () =
 
     let validateSync v =
         if v = "James" then
-            Some "Can't be James"
+            Error "Can't be James"
         else
-            None
+            Ok v
 
     let validateAsync v =
         async {
             if v = "Jones" then
-                return Some "Can't be Jones"
+                return Error "Can't be Jones"
             else
-                return None
+                return Ok v
         }
 
     let firstName =

@@ -2,10 +2,11 @@ namespace Fable.ReactHookForm
 
 open Fable.Core
 open Fable.Core.JsInterop
-open Fable.ReactHookForm.Validation
+open System.Text.RegularExpressions
+open Fable.Core.JS
 
+[<AutoOpen>]
 module Controller =
-    open System.Text.RegularExpressions
     type UseControllerProps<'T, 'F> =
         | Control of Form.Control<'T>
         | Name of string
@@ -22,17 +23,19 @@ module Controller =
           onChange: ('F -> unit)
           onChangeEvent: (Browser.Types.Event -> 'F -> unit) }
 
+    type ControllerValidationError = { message: string }
+
     type private ControllerFieldStateInternal =
         { invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError option }
+          error: ControllerValidationError option }
 
     type ControllerFieldState =
         { invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError }
+          error: ControllerValidationError }
 
     type private UseControllerReturnInternal<'F> =
         { field: ControllerRenderPropsInternal<'F>
@@ -48,16 +51,31 @@ module Controller =
           invalid: bool
           isTouched: bool
           isDirty: bool
-          error: ValidationError
+          error: ControllerValidationError
           errorMessage: string }
 
-    let private mapRules = function
-        | ValidateAsync f -> ValidatePromise(f >> Async.StartAsPromise)
-        | MinLength (v,m) -> MinLength' { value = v; message = m }
-        | MaxLength (v,m) -> MaxLength' { value = v; message = m }
-        | Min (v,m) -> Min' { value = v; message = m }
-        | Max (v,m) -> Max' { value = v; message = m }
-        | Pattern (v,m) -> Pattern' { value = new Regex(v); message = m }
+    let private mapResultToOption (result: Result<'T, string>) : string option =
+        match result with
+        | Ok _ -> None
+        | Error msg -> Some msg
+
+    let private mapAsyncResultToOption (result: Async<Result<'T, string>>) : Promise<string option> =
+        async {
+            let! result' = result
+
+            return (mapResultToOption result')
+        }
+        |> Async.StartAsPromise
+
+    let private mapRules =
+        function
+        | Validate f -> ValidateOption(f >> mapResultToOption)
+        | ValidateAsync f -> ValidatePromise(f >> mapAsyncResultToOption)
+        | MinLength (v, m) -> MinLength' { value = v; message = m }
+        | MaxLength (v, m) -> MaxLength' { value = v; message = m }
+        | Min (v, m) -> Min' { value = v; message = m }
+        | Max (v, m) -> Max' { value = v; message = m }
+        | Pattern (v, m) -> Pattern' { value = new Regex(v); message = m }
         | r -> r
 
     let private flattenRules prop =

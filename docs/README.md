@@ -11,9 +11,7 @@ open Feliz
 open Fable.Core
 open Fable.React
 open Fable.FluentUI
-open Fable.ReactHookForm.Form
-open Fable.ReactHookForm.Controller
-open Fable.ReactHookForm.Validation
+open Fable.ReactHookForm
 open System.Text.RegularExpressions
 
 type IDataNested = { Age: int }
@@ -103,7 +101,7 @@ let TestForm () =
     ]
 ```
 
-`NOTE:` While the above sample show the use of `Fable.FluentUI`, this library can be used with any UI framework. And while it uses `Feliz` for defining a functional component, it should support `FunctionComponent.Of(...)` from `Fable.React`.
+> `NOTE:` While the above sample show the use of `Fable.FluentUI`, this library can be used with any UI framework. And while it uses `Feliz` for defining a functional component, it should support `FunctionComponent.Of(...)` from `Fable.React`.
 
 > `NOTE:` This is very much an early release which includes just a small subset of the PrimeReact controls and properties, It should be a solid foundation for extending into the other controls. Issue requesting new features are very much welcome.
 

@@ -14,7 +14,6 @@ let firstName =
               MinLength(4, "Min length 4")
               MaxLength(50, "Max length 50")
               Pattern("^[A-Z].?", "Must start with capital")
-              Validate validateSync
           ] ]
 ```
 
@@ -53,18 +52,20 @@ let lastName =
 
 ## ```Validate validate```
 
-**validate :** ```'F -> string option```
-<br>A function which receives the current value of the field and returns either None, if no error, or Some which contains the error message
+**validate :** ```'F -> Result<'F, string>```
+<br>A function which receives the current value of the field and returns either Ok, if no error, or Error error message.
+
+> `NOTE:` The Ok value will be ignored.
 
 **Example**
 
 ```fsharp
 let validate v =
     if ...
-    then Some "Not valid"
-    else None
+    then Ok v
+    else Error "Not valid"
 
-let fld = useController form.control (fun f -> f.Field) 
+let fld = useController form.control (fun f -> f.Field)
     [ Rules
         [ Validate validate ]
     ]
@@ -72,8 +73,10 @@ let fld = useController form.control (fun f -> f.Field)
 
 ## ```ValidateAsync validateAsync```
 
-**validateAsync :** ```'F -> Async<string option>```
-<br>A function which receives the current value of the field and returns either None, if no error, or Some which contains the error message
+**validateAsync :** ```'F -> Async<Result<'F,string>>```
+<br>An async function which receives the current value of the field and returns either Ok, if no error, or Error error message.
+
+> `NOTE:` The Ok value will be ignored.
 
 **Example**
 
@@ -82,14 +85,51 @@ let validateAsync v =
     async {
         let result =
             if ...
-            then Some "Not valid"
-            else None
+            then Ok v
+            else Error "Not valid"
 
         return result
     }
 
-let fld = useController form.control (fun f -> f.Field) 
+let fld = useController form.control (fun f -> f.Field)
     [ Rules
         [ ValidateAsync validateAsync ]
     ]
+```
+
+## Integration with existing validation frameworks
+
+Validation logic can easily be adapted to integrate with validation frameworks such as [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling) or [Validus](https://github.com/pimbrouwers/Validus) by writing adapters to convert validation results into ```Result<'T,string>```.
+
+For example, if the framework returns ```Result<'T,string list>```, the following logic can convert this into the expected type for React-Hook-Form:
+
+```fsharp
+    // Convert Result<'T, string list> to Result<'T,string>
+    let mapError result =
+        result |> Result.mapError List.head
+
+    // Create a validate rule using 'T -> Result<'T, string list>
+    let validate v =
+        Validate (v >> mapError)
+
+    // Create Rules using 'T -> Result<'T, string list>
+    let rule v =
+        Rules [ Validate (v >> mapError) ]
+```
+
+The above adapters would now support:
+
+```fsharp
+    let validateName name : Result<string, string list> =
+        ...
+
+    let name = useController
+        form.control
+        (fun f -> f.Name)
+        [ Rules [ validate validateName ]]
+
+    let name' = useController
+        form.control
+        (fun f -> f.Name)
+        [ rules validateName ]
 ```
