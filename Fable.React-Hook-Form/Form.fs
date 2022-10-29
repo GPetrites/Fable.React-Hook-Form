@@ -3,9 +3,9 @@ namespace Fable.ReactHookForm
 open Fable.Core
 open Fable.Core.JsInterop
 open System
+open Fable.Core.JS
 
 module Form =
-    open Fable.Core.JS
 
     [<StringEnum>]
     type ValidationMode =

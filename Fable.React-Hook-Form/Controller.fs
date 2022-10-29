@@ -52,26 +52,28 @@ module Controller =
           error: ValidationError
           errorMessage: string }
 
-    let mapResultToOption (result: Result<'T,string>) : string option =
+    let private mapResultToOption (result: Result<'T, string>) : string option =
         match result with
         | Ok _ -> None
         | Error msg -> Some msg
 
-    let mapAsyncResultToOption (result: Async<Result<'T,string>> ) : Promise<string option> =
+    let private mapAsyncResultToOption (result: Async<Result<'T, string>>) : Promise<string option> =
         async {
             let! result' = result
 
             return (mapResultToOption result')
-        } |> Async.StartAsPromise
+        }
+        |> Async.StartAsPromise
 
-    let private mapRules = function
-        | Validate f -> Validate'(f >> mapResultToOption)
+    let private mapRules =
+        function
+        | Validate f -> ValidateOption(f >> mapResultToOption)
         | ValidateAsync f -> ValidatePromise(f >> mapAsyncResultToOption)
-        | MinLength (v,m) -> MinLength' { value = v; message = m }
-        | MaxLength (v,m) -> MaxLength' { value = v; message = m }
-        | Min (v,m) -> Min' { value = v; message = m }
-        | Max (v,m) -> Max' { value = v; message = m }
-        | Pattern (v,m) -> Pattern' { value = new Regex(v); message = m }
+        | MinLength (v, m) -> MinLength' { value = v; message = m }
+        | MaxLength (v, m) -> MaxLength' { value = v; message = m }
+        | Min (v, m) -> Min' { value = v; message = m }
+        | Max (v, m) -> Max' { value = v; message = m }
+        | Pattern (v, m) -> Pattern' { value = new Regex(v); message = m }
         | r -> r
 
     let private flattenRules prop =

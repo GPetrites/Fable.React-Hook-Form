@@ -7,10 +7,10 @@ module Validation =
     type IntRule = { value: int; message: string }
     type DecimalRule = { value: decimal; message: string }
     type PatternRule = { value: Regex; message: string }
-    type CustomValidateRule<'T> = 'T -> Result<'T,string>
-    type CustomValidateRule'<'T> = 'T -> Option<string>
-    type CustomValidateAsyncRule<'T> = 'T -> Async<Result<'T,string>>
-    type CustomValidatePromiseRule<'T> = 'T -> Promise<string option>
+    type RuleValidateResult<'T> = 'T -> Result<'T,string>
+    type RuleValidateOption<'T> = 'T -> Option<string>
+    type RuleValidateAsyncResult<'T> = 'T -> Async<Result<'T,string>>
+    type RuleValidatePromiseOption<'T> = 'T -> Promise<string option>
 
     type Rule<'T> =
         | Required of string
@@ -30,9 +30,9 @@ module Validation =
         | Pattern of string * string
         | [<CompiledName("pattern")>] Pattern' of PatternRule
 
-        | Validate of CustomValidateRule<'T>
-        | [<CompiledName("validate")>] Validate' of CustomValidateRule'<'T>
-        | [<CompiledName("validate")>] ValidateAsync of CustomValidateAsyncRule<'T>
-        | [<CompiledName("validate")>] ValidatePromise of CustomValidatePromiseRule<'T>
+        | Validate of RuleValidateResult<'T>
+        | [<CompiledName("validate")>] ValidateOption of RuleValidateOption<'T>
+        | [<CompiledName("validate")>] ValidateAsync of RuleValidateAsyncResult<'T>
+        | [<CompiledName("validate")>] ValidatePromise of RuleValidatePromiseOption<'T>
 
     type ValidationError = { message: string }
